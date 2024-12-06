@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
+    html {
+      background-color: black;
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
       height: 100%;
       margin: 0;
       padding: 0;
       background-color: black;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
     
     #terminal {
@@ -15,22 +24,26 @@
       font-family: "Courier New", monospace;
       padding: 20px;
       box-sizing: border-box;
-      
+      background-color: black;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      font-size: 16px;
     }
     
     .line {
-      white-space: pre;
+      white-space: pre-wrap;
       line-height: 1.5;
+      max-width: 100%;
     }
 
     .command {
       cursor: pointer;
       padding: 2px 4px;
-      line-height: 2;
+      line-height: 1.6;
       position: relative;
+      display: inline-block;
+      word-break: break-all;
     }
 
     .command:hover {
@@ -42,15 +55,15 @@
     }
     
     .feedback {
-      position: absolute;
-      top: -20px;
+      position: fixed;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(0, 255, 0, 0.9);
       color: black;
-      padding: 4px 8px;
+      padding: 8px 16px;
       border-radius: 4px;
-      font-size: 12px;
+      font-size: 14px;
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -61,8 +74,8 @@
     
     #cursor {
       display: inline-block;
-      width: 10px;
-      height: 20px;
+      width: 8px;
+      height: 16px;
       background-color: #00ff00;
       animation: blink 1s infinite;
       vertical-align: middle;
@@ -71,7 +84,6 @@
     .github-link a {
       color: #00ff00;
       text-decoration: none;
-      font-family: "Courier New", monospace;
     }
     
     .github-link a:hover {
@@ -83,18 +95,43 @@
       50% { opacity: 1; }
       100% { opacity: 0; }
     }
+
+    @media (max-width: 768px) {
+      #terminal {
+        padding: 16px;
+        font-size: clamp(16px, 4vw, 24px);
+      }
+      
+      .line {
+        margin-bottom: 0.8em;
+      }
+      
+      .command {
+        padding: 4px 8px;
+        margin: 8px 0;
+      }
+
+      .feedback {
+        font-size: clamp(14px, 3.5vw, 20px);
+      }
+
+      #cursor {
+        width: 0.5em;
+        height: 1em;
+      }
+    }
   </style>
-    <!-- Fathom - beautiful, simple website analytics -->
-    <script src="https://cdn.usefathom.com/script.js" data-site="XFAGDFWO" defer></script>
-    <!-- / Fathom -->
-    <title>Chat-CLI, The Website</title>
+  <!-- Fathom - beautiful, simple website analytics -->
+  <script src="https://cdn.usefathom.com/script.js" data-site="XFAGDFWO" defer></script>
+  <!-- / Fathom -->
+  <title>Chat-CLI, The Website</title>
 </head>
 <body>
   <div id="terminal">
     <div class="content">
       <div class="line">Welcome to chat-cli.chat</div>
       <div class="line">>_ Coming soon to a terminal near you...</div>
-      <div class="line">>_ To install locally, copy and paste the following command in your terminal:</div>
+      <div class="line">>_ To install locally copy and paste the following command in your terminal:</div>
       <div class="line command" onclick="copyToClipboard(this)">brew tap chat-cli/chat-cli && brew install chat-cli<span class="feedback">Command copied!</span></div>
       <div class="line">>_ EOL<span id="cursor"></span></div>
     </div>
@@ -109,17 +146,12 @@
       
       try {
         await navigator.clipboard.writeText(command);
-        
-        // Show feedback
         const feedback = element.querySelector('.feedback');
         feedback.classList.add('active');
-        
-        // Hide feedback after 1 second
         setTimeout(() => {
           feedback.classList.remove('active');
         }, 1000);
       } catch (err) {
-        // Fallback for older browsers
         const textArea = document.createElement('textarea');
         textArea.value = command;
         textArea.style.position = 'fixed';
@@ -144,8 +176,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
