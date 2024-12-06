@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: black;
+    }
+    
+    #terminal {
+      min-height: 100vh;
+      color: #00ff00;
+      font-family: "Courier New", monospace;
+      padding: 20px;
+      box-sizing: border-box;
+      
+      /* Flexbox for content positioning */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .line {
+      white-space: pre;
+      line-height: 1.5;
+    }
+    
+    #cursor {
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      background-color: #00ff00;
+      animation: blink 1s infinite;
+      vertical-align: middle;
+    }
+    
+    .github-link a {
+      color: #00ff00;
+      text-decoration: none;
+      font-family: "Courier New", monospace;
+    }
+    
+    .github-link a:hover {
+      text-decoration: underline;
+    }
+    
+    @keyframes blink {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    <div class="content">
+      <div class="line">Welcome to chat-cli.chat</div>
+      <div class="line">>_ System under construction</div>
+      <div class="line">>_ Coming soon to a terminal near you...</div>
+      <div class="line">>_ EOL<span id="cursor"></span></div>
+    </div>
+    <div class="github-link">
+      <div class="line"><a href="https://github.com/chat-cli">https://github.com/chat-cli</a></div>
+    </div>
+  </div>
+</body>
+</html>
