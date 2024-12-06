@@ -16,7 +16,6 @@
       padding: 20px;
       box-sizing: border-box;
       
-      /* Flexbox for content positioning */
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -25,6 +24,39 @@
     .line {
       white-space: pre;
       line-height: 1.5;
+    }
+
+    .command {
+      cursor: pointer;
+      padding: 2px 4px;
+      line-height: 2;
+      position: relative;
+    }
+
+    .command:hover {
+      background: rgba(0, 255, 0, 0.1);
+    }
+
+    .command:active {
+      background: rgba(0, 255, 0, 0.2);
+    }
+    
+    .feedback {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 255, 0, 0.9);
+      color: black;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feedback.active {
+      opacity: 1;
     }
     
     #cursor {
@@ -52,22 +84,68 @@
       100% { opacity: 0; }
     }
   </style>
-  <!-- Fathom - beautiful, simple website analytics -->
-  <script src="https://cdn.usefathom.com/script.js" data-site="XFAGDFWO" defer></script>
-  <!-- / Fathom -->
-   <title>Chat-CLI, The Website</title>
+    <!-- Fathom - beautiful, simple website analytics -->
+    <script src="https://cdn.usefathom.com/script.js" data-site="XFAGDFWO" defer></script>
+    <!-- / Fathom -->
+    <title>Chat-CLI, The Website</title>
 </head>
 <body>
   <div id="terminal">
     <div class="content">
       <div class="line">Welcome to chat-cli.chat</div>
-      <div class="line">>_ System under construction</div>
       <div class="line">>_ Coming soon to a terminal near you...</div>
+      <div class="line">>_ To install locally, copy and paste the following command in your terminal:</div>
+      <div class="line command" onclick="copyToClipboard(this)">brew tap chat-cli/chat-cli && brew install chat-cli<span class="feedback">Command copied!</span></div>
       <div class="line">>_ EOL<span id="cursor"></span></div>
     </div>
     <div class="github-link">
       <div class="line"><a href="https://github.com/chat-cli">https://github.com/chat-cli</a></div>
     </div>
   </div>
+
+  <script>
+    async function copyToClipboard(element) {
+      const command = "brew tap chat-cli/chat-cli && brew install chat-cli";
+      
+      try {
+        await navigator.clipboard.writeText(command);
+        
+        // Show feedback
+        const feedback = element.querySelector('.feedback');
+        feedback.classList.add('active');
+        
+        // Hide feedback after 1 second
+        setTimeout(() => {
+          feedback.classList.remove('active');
+        }, 1000);
+      } catch (err) {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = command;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+          document.execCommand('copy');
+          const feedback = element.querySelector('.feedback');
+          feedback.classList.add('active');
+          setTimeout(() => {
+            feedback.classList.remove('active');
+          }, 1000);
+        } catch (err) {
+          console.error('Failed to copy text: ', err);
+        }
+        
+        document.body.removeChild(textArea);
+      }
+    }
+  </script>
 </body>
 </html>
+
+
+
+
+
